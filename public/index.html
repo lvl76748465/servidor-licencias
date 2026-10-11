@@ -2,417 +2,1266 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080b12">
-<title>NEXUS | License Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070a12">
+<title>inj3ct33 — License Management</title>
+
 <style>
-:root{color-scheme:dark;--bg:#080b12;--panel:#111824;--panel2:#151f2e;--line:#27354a;--text:#f1f5ff;--muted:#8997af;--blue:#55a7ff;--cyan:#50e5ef;--green:#52e0ad;--red:#ff647c;--yellow:#ffc76a}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 70% -10%,#12468a35,transparent 45%),var(--bg);color:var(--text);font:14px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
-.btn{padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);font-weight:700;transition:.15s}
-.btn:hover{filter:brightness(1.15)}.btn:disabled{opacity:.6;cursor:wait}
-.primary{background:linear-gradient(110deg,var(--cyan),var(--blue));color:#06111c;border:0}
-.danger{color:#ff9aa9}.full{width:100%;margin-top:19px}
-input,select{width:100%;min-height:43px;padding:11px 12px;background:#0a101a;color:var(--text);border:1px solid var(--line);border-radius:9px;outline:none}
-input:focus,select:focus{border-color:var(--blue)}
-label{display:block;margin:16px 0 8px;color:#b5c3d9;font-size:12px;font-weight:700}
-h1,h2,h3,p{margin-top:0}h1{font-size:24px;margin-bottom:7px}h2{font-size:16px;margin-bottom:6px}p{line-height:1.6}
-.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px}
-.login-card{width:100%;max-width:410px;padding:32px;background:var(--panel);border:1px solid #293a50;border-radius:18px;box-shadow:0 25px 90px #0008}
-.mark{width:46px;height:46px;display:grid;place-items:center;border-radius:12px;color:var(--cyan);font-size:22px;font-weight:950;border:1px solid #50e5ef55;background:#50e5ef0c}
-.eyebrow{font-size:10px;color:var(--cyan);font-weight:800;letter-spacing:1.6px;margin-bottom:9px}
-.message{margin-top:12px;font-size:12px;line-height:1.5}.error{color:var(--red)}.success{color:var(--green)}
-.layout{min-height:100vh;display:grid;grid-template-columns:230px minmax(0,1fr)}
-.sidebar{position:sticky;top:0;height:100vh;padding:22px 15px;background:#0b1019ed;border-right:1px solid #1e2a3d;display:flex;flex-direction:column}
-.brand{display:flex;align-items:center;gap:11px;padding:0 7px 23px;border-bottom:1px solid #202c3e}
-.brand-title{font-size:13px;font-weight:900;letter-spacing:1.5px}.brand-sub{margin-top:5px;color:var(--muted);font-size:10px;letter-spacing:1px}
-.nav-label{margin:26px 10px 10px;color:#62728c;font-size:10px;font-weight:800;letter-spacing:1.5px}
-.nav{display:flex;align-items:center;gap:12px;padding:12px 11px;margin:3px 0;color:#8d9cb5;border:1px solid transparent;border-radius:9px;font-size:12px;font-weight:650}
-.nav.active{color:#8eefff;background:linear-gradient(90deg,#50e5ef12,#55a7ff08);border-color:#50e5ef25}
-.nav-icon{width:19px;text-align:center;font-size:16px}
-.sidebar-bottom{margin-top:auto;padding:13px;border:1px solid var(--line);border-radius:11px;background:#101722}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 9px #52e0ad80;margin-right:7px}
-main{min-width:0;padding:27px}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}
-.top-actions{display:flex;align-items:center;gap:9px}
-.admin-chip{display:flex;align-items:center;gap:9px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#111824}
-.avatar{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:#55a7ff1c;color:#8dc8ff;font-weight:900}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:16px}
-.stat{position:relative;overflow:hidden;padding:17px;background:linear-gradient(140deg,#131c2a,#0e141e);border:1px solid #26364c;border-radius:13px}
-.stat:after{content:"";position:absolute;top:0;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,#55a7ff80,transparent)}
-.stat-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px}
-.stat-icon{display:grid;place-items:center;width:32px;height:32px;border:1px solid #55a7ff30;border-radius:9px;background:#55a7ff10;color:var(--blue);font-size:17px}
-.stat-value{font-size:29px;font-weight:850;letter-spacing:-1px;margin:15px 0 6px}
-.stat-foot{font-size:10px;color:var(--muted)}.green{color:var(--green)}.yellow{color:var(--yellow)}
-.grid-main{display:grid;grid-template-columns:minmax(250px,.85fr) minmax(0,1.4fr);gap:15px;align-items:stretch;margin-bottom:15px}
-.card{min-width:0;background:linear-gradient(145deg,#121a27,#0f151f);border:1px solid #263247;border-radius:13px;padding:19px}
-.card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
-.card-header p{font-size:11px;color:var(--muted);margin:0}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fields label{margin-top:5px}
-.generated{margin-top:14px;padding:13px;background:#52e0ad09;border:1px solid #52e0ad40;border-radius:10px}
-.key{font:12px/1.7 ui-monospace,Menlo,monospace;color:#9cf2d0;overflow-wrap:anywhere;margin:10px 0}
-.chart-wrap{height:190px;position:relative;width:100%}.chart-wrap canvas{display:block;width:100%;height:100%}
-.legend{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:10px;margin-top:10px}
-.legend-dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px #50e5ef80}
-.table-card{padding:0;overflow:hidden}.table-header{padding:19px 19px 15px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 19px 17px}
-.search{flex:1;min-width:170px;position:relative}.search input{padding-left:34px}.search-icon{position:absolute;left:12px;top:12px;color:#71819b}
-.filters select{width:auto;min-width:125px}
-.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;text-align:left}
-thead{background:#0c121d}th{padding:12px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#75849d;border-top:1px solid #222e40;border-bottom:1px solid #222e40;white-space:nowrap}
-td{padding:14px;font-size:12px;color:#cbd6e8;border-bottom:1px solid #202b3b;white-space:nowrap}
-tbody tr:hover{background:#55a7ff06}.id-text{color:#8293ad;font-family:ui-monospace,monospace}
-.status{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:6px;border:1px solid #52e0ad36;background:#52e0ad0b;color:var(--green);font-size:10px}
-.status:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
-.status.expired{color:var(--red);border-color:#ff647c36;background:#ff647c0b}
-.empty{padding:30px;text-align:center;color:var(--muted);white-space:normal}
-.table-footer{display:flex;justify-content:space-between;gap:10px;padding:13px 18px;color:var(--muted);font-size:11px}
-footer{text-align:center;color:#55647c;font-size:10px;letter-spacing:.5px;padding:20px 0 3px}
-@media(max-width:1180px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-main{grid-template-columns:1fr}}
-@media(max-width:720px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:13px 15px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:0;border:0}.nav-label,.nav,.sidebar-bottom{display:none}main{padding:18px 12px}.topbar{align-items:flex-start;flex-wrap:wrap}.topbar h1{font-size:21px}.admin-chip .admin-name{display:none}.stats{gap:9px}.stat{padding:13px}.stat-value{font-size:25px}.card{padding:15px}.table-header{padding:15px}.filters{padding:0 15px 14px}th,td{padding:12px 10px}.table-footer{flex-direction:column}}
-@media(max-width:380px){.stats{grid-template-columns:1fr}.top-actions .btn{padding:9px;font-size:11px}}
+:root {
+  --bg: #070a12;
+  --panel: #0d1220;
+  --panel2: #10182a;
+  --border: #202b40;
+  --blue: #1688ff;
+  --cyan: #38d9ff;
+  --text: #edf4ff;
+  --muted: #8190aa;
+  --green: #36e6a0;
+  --red: #ff5d78;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 80% 0%, #10244a 0%, transparent 38%),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh;
+}
+
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+
+.hidden { display: none !important; }
+
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* LOGIN */
+
+.login-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 34px;
+  border: 1px solid #263957;
+  border-radius: 22px;
+  background: rgba(13,18,32,.94);
+  box-shadow: 0 0 70px #087cff14;
+}
+
+.logo {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #03101f;
+  font-size: 22px;
+  font-weight: 1000;
+  border-radius: 15px;
+  box-shadow: 0 0 28px #1688ff55;
+  letter-spacing: -2px;
+}
+
+.brand {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 18px 0 5px;
+}
+
+.brand span { color: var(--cyan); }
+
+.subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.login-card h2 { margin-top: 32px; font-size: 21px; }
+
+.field { margin-top: 18px; }
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #b3c2da;
+}
+
+input, select {
+  width: 100%;
+  background: #080e1a;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 14px;
+  outline: none;
+}
+
+input:focus, select:focus { border-color: var(--blue); }
+
+.primary-btn {
+  border: 0;
+  color: white;
+  background: linear-gradient(100deg, #1268ee, #1688ff);
+  padding: 13px 17px;
+  border-radius: 10px;
+  font-weight: 750;
+  box-shadow: 0 5px 22px #1688ff25;
+  transition: .2s;
+}
+
+.primary-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+.login-card .primary-btn { width: 100%; margin-top: 22px; }
+
+.login-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 14px;
+}
+
+/* APP LAYOUT */
+
+.app { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 245px;
+  flex-shrink: 0;
+  padding: 25px 17px;
+  background: #080c16;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .brand { font-size: 21px; margin: 0; }
+.sidebar .subtitle { font-size: 9px; margin-top: 5px; letter-spacing: 1.4px; }
+
+.brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 38px; }
+.brand-row .logo { width: 43px; height: 43px; font-size: 18px; border-radius: 12px; }
+
+.nav-label {
+  color: #61718b;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  margin: 0 10px 12px;
+}
+
+.nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 12px 13px;
+  margin: 3px 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #91a1bb;
+  background: transparent;
+  font-size: 13px;
+}
+
+.nav-btn:hover { background: #111a2b; color: white; }
+
+.nav-btn.active {
+  color: #fff;
+  border-color: #1a4c86;
+  background: linear-gradient(90deg, #1268ee28, #1688ff08);
+}
+
+.nav-icon { width: 20px; text-align: center; color: var(--cyan); }
+
+.sidebar-bottom { margin-top: auto; }
+
+.connection-box {
+  background: #0e1725;
+  border: 1px solid var(--border);
+  padding: 13px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-bottom: 13px;
+}
+
+.connection-box small { display: block; color: var(--muted); margin-top: 7px; }
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 7px;
+  box-shadow: 0 0 9px #36e6a077;
+}
+
+.dot.off { background: var(--red); box-shadow: none; }
+
+.logout-btn {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: #a9b7ce;
+  padding: 11px;
+  border-radius: 10px;
+}
+
+.logout-btn:hover { color: white; border-color: var(--red); }
+
+.main { flex: 1; min-width: 0; padding: 28px; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.topbar h1 { font-size: 25px; margin: 0 0 7px; }
+.topbar p { color: var(--muted); font-size: 13px; margin: 0; }
+
+.admin-chip {
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  background: #0d1422;
+  border-radius: 11px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.section { display: none; }
+.section.active { display: block; }
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.section-heading h2 { font-size: 18px; margin: 0 0 5px; }
+.section-heading p { margin: 0; font-size: 12px; color: var(--muted); }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.stat-card {
+  background: linear-gradient(145deg, #101a2b, #0c1220);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: var(--radius);
+  min-width: 0;
+}
+
+.stat-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.stat-label { color: var(--muted); font-size: 12px; }
+.stat-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #1688ff18;
+  color: var(--cyan);
+}
+
+.stat-number { font-size: 29px; font-weight: 850; margin-top: 17px; overflow-wrap: anywhere; }
+.stat-note { color: #788ba7; font-size: 11px; margin-top: 6px; }
+
+.panel {
+  border: 1px solid var(--border);
+  background: rgba(13,18,32,.95);
+  border-radius: var(--radius);
+  padding: 21px;
+  min-width: 0;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 19px;
+}
+
+.panel-title h3 { margin: 0; font-size: 15px; }
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, .8fr);
+  gap: 18px;
+}
+
+.quick-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.quick-form .field { margin-top: 0; }
+.quick-form .full { grid-column: 1 / -1; }
+
+.form-note { font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+.status-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #1c2739;
+  font-size: 12px;
+}
+
+.status-line:last-child { border-bottom: 0; }
+.status-line span:first-child { color: var(--muted); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 750;
+  background: #1688ff1b;
+  color: #72bdff;
+  white-space: nowrap;
+}
+
+.badge.valid { background: #36e6a015; color: var(--green); }
+.badge.expired { background: #ff5d7818; color: var(--red); }
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.toolbar input { flex: 1; min-width: 180px; }
+.toolbar select { width: auto; min-width: 145px; }
+
+.secondary-btn {
+  background: #111b2c;
+  color: #d7e5fb;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+}
+
+.secondary-btn:hover { border-color: var(--blue); }
+
+.table-wrap { width: 100%; overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; min-width: 560px; }
+
+th {
+  color: #7f90aa;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #1b2536;
+  font-size: 12px;
+  color: #cbd7e9;
+}
+
+tbody tr:hover { background: #121d30; }
+tbody tr:last-child td { border-bottom: 0; }
+
+.key-cell { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--cyan); }
+.muted { color: var(--muted); }
+.empty { text-align: center; color: var(--muted); padding: 30px; }
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.pagination .secondary-btn { padding: 8px 12px; }
+
+.notice {
+  padding: 13px;
+  border-radius: 10px;
+  background: #1688ff12;
+  border: 1px solid #1688ff32;
+  color: #a7d3ff;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 20;
+  width: min(360px, calc(100vw - 32px));
+  padding: 15px 17px;
+  border-radius: 12px;
+  background: #101c2d;
+  border: 1px solid #2a4668;
+  box-shadow: 0 15px 45px #0007;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.toast.error { border-color: #a83c50; }
+.toast.success { border-color: #247f63; }
+
+.mobile-menu { display: none; }
+
+@media (max-width: 1100px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    inset: 0 auto 0 0;
+    width: 260px;
+    box-shadow: 20px 0 70px #0009;
+  }
+  .sidebar.open { display: flex; }
+  .main { padding: 20px 14px; }
+  .mobile-menu { display: inline-block; }
+  .topbar { align-items: flex-start; }
+  .topbar h1 { font-size: 21px; }
+  .admin-chip { display: none; }
+  .stats { gap: 10px; }
+  .stat-card { padding: 15px; }
+  .stat-number { font-size: 25px; }
+  .panel { padding: 15px; }
+  .quick-form { grid-template-columns: 1fr; }
+  .quick-form .full { grid-column: auto; }
+}
+
+@media (max-width: 380px) {
+  .stats { grid-template-columns: 1fr; }
+}
 </style>
 </head>
+
 <body>
 
-<section class="login-screen" id="loginScreen">
-  <div class="login-card">
-    <div class="mark">N</div>
-    <div class="eyebrow" style="margin-top:26px">NEXUS / ACCESS CONTROL</div>
-    <h1>Bienvenido de nuevo</h1>
-    <p class="muted">Accede al centro de control de licencias.</p>
-    <form id="loginForm">
-      <label for="password">Contraseña de administrador</label>
-      <input id="password" type="password" placeholder="Introduce tu contraseña" autocomplete="current-password" required>
-      <button class="btn primary full" id="loginButton" type="submit">Acceder al panel →</button>
-    </form>
-    <div id="loginMessage" class="message" role="status"></div>
-    <p class="muted small" style="margin:24px 0 0">● &nbsp; Portal privado de administración</p>
-  </div>
-</section>
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen">
+  <form id="loginForm" class="login-card">
+    <div class="logo">I3</div>
+    <div class="brand">inj3ct<span>33</span></div>
+    <div class="subtitle">License management console</div>
 
-<div class="layout hidden" id="appScreen">
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="mark">N</div>
-      <div><div class="brand-title">NEXUS CONTROL</div><div class="brand-sub">LICENSE MANAGEMENT</div></div>
+    <h2>Acceso administrativo</h2>
+    <p class="muted" style="font-size:13px;line-height:1.6">
+      Inicia sesión para administrar tus licencias.
+    </p>
+
+    <div class="field">
+      <label for="adminPassword">Contraseña de administrador</label>
+      <input id="adminPassword" type="password" placeholder="Introduce tu contraseña"
+        autocomplete="current-password" required>
     </div>
-    <div class="nav-label">Workspace</div>
-    <div class="nav active"><span class="nav-icon">▦</span> Panel general</div>
-    <div class="nav"><span class="nav-icon">⌘</span> Licencias</div>
-    <div class="nav-label">Sistema</div>
-    <div class="nav"><span class="nav-icon">⚙</span> Configuración</div>
-    <div class="sidebar-bottom"><div class="small"><span class="dot"></span>Panel disponible</div><p class="muted small" style="margin:9px 0 0">NEXUS CONTROL<br>Administración de accesos</p></div>
+
+    <button class="primary-btn" id="loginButton" type="submit">Iniciar sesión →</button>
+    <div id="loginError" class="login-error" role="alert"></div>
+  </form>
+</div>
+
+<!-- APPLICATION -->
+<div id="app" class="app hidden">
+
+  <aside id="sidebar" class="sidebar">
+    <div class="brand-row">
+      <div class="logo">I3</div>
+      <div>
+        <div class="brand">inj3ct<span>33</span></div>
+        <div class="subtitle">LICENSE MANAGEMENT</div>
+      </div>
+    </div>
+
+    <div class="nav-label">PRINCIPAL</div>
+    <button class="nav-btn active" data-page="dashboard">
+      <span class="nav-icon">◈</span> Dashboard
+    </button>
+    <button class="nav-btn" data-page="licenses">
+      <span class="nav-icon">▤</span> Licencias
+    </button>
+    <button class="nav-btn" data-page="create">
+      <span class="nav-icon">＋</span> Crear licencia
+    </button>
+    <button class="nav-btn" data-page="system">
+      <span class="nav-icon">⌘</span> Estado del sistema
+    </button>
+
+    <div class="sidebar-bottom">
+      <div class="connection-box">
+        <div><span id="sidebarDot" class="dot"></span><span id="sidebarStatus">Comprobando sistema</span></div>
+        <small>inj3ct33 · Secure console</small>
+      </div>
+      <button id="logoutButton" class="logout-btn">↪ Cerrar sesión</button>
+    </div>
   </aside>
 
-  <main>
+  <main class="main">
     <header class="topbar">
-      <div><div class="eyebrow">WORKSPACE / OVERVIEW</div><h1>Centro de control</h1><div class="muted small">Administra y supervisa tus licencias.</div></div>
-      <div class="top-actions">
-        <div class="admin-chip"><div class="avatar">A</div><div class="admin-name"><div style="font-size:11px;font-weight:750">Administrador</div><div class="muted" style="font-size:10px;margin-top:3px">Acceso privado</div></div></div>
-        <button class="btn danger" id="logoutButton">Cerrar sesión</button>
+      <div>
+        <button id="mobileMenu" class="secondary-btn mobile-menu" type="button"
+          style="margin-bottom:12px">☰ Menú</button>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle">Resumen de tu sistema de licencias.</p>
       </div>
+      <div class="admin-chip"><span class="dot"></span> Sesión administrativa</div>
     </header>
 
-    <section class="stats">
-      <div class="stat"><div class="stat-top">LICENCIAS CARGADAS <span class="stat-icon">⌘</span></div><div class="stat-value" id="totalCount">—</div><div class="stat-foot">Registros consultados</div></div>
-      <div class="stat"><div class="stat-top">LICENCIAS VIGENTES <span class="stat-icon">✓</span></div><div class="stat-value green" id="activeCount">—</div><div class="stat-foot">No han vencido</div></div>
-      <div class="stat"><div class="stat-top">LICENCIAS VENCIDAS <span class="stat-icon">◷</span></div><div class="stat-value" id="expiredCount">—</div><div class="stat-foot">Fuera de vigencia</div></div>
-      <div class="stat"><div class="stat-top">VENCEN EN 24 H <span class="stat-icon">⌁</span></div><div class="stat-value yellow" id="soonCount">—</div><div class="stat-foot">Próximas 24 horas</div></div>
-    </section>
+    <!-- DASHBOARD -->
+    <section id="page-dashboard" class="section active">
+      <div class="section-heading">
+        <div>
+          <h2>Panel de control</h2>
+          <p>Resumen general de tus licencias.</p>
+        </div>
+        <button class="secondary-btn" id="refreshDashboard" type="button">↻ Actualizar</button>
+      </div>
 
-    <section class="grid-main">
-      <div class="card">
-        <div class="card-header"><div><h2>Generar licencia</h2><p>Crea una clave de acceso temporal.</p></div><span class="stat-icon">＋</span></div>
-        <form id="createForm">
-          <div class="fields">
-            <div><label for="duration">Duración</label><input id="duration" type="number" min="1" max="8760" value="24" required></div>
-            <div><label for="unit">Unidad</label><select id="unit"><option value="horas">Horas</option><option value="dias">Días</option></select></div>
-          </div>
-          <button class="btn primary full" id="createButton" type="submit">＋ Generar nueva clave</button>
-        </form>
-        <div class="message" id="createMessage" role="status"></div>
-        <div class="generated hidden" id="generatedBox">
-          <div class="success small">✓ Licencia generada</div>
-          <div class="muted small" style="margin-top:7px">Guarda esta clave; no se puede recuperar después.</div>
-          <div class="key" id="generatedKey"></div>
-          <button class="btn" id="copyButton" type="button">Copiar clave</button>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-label">Licencias totales</span><span class="stat-icon">▤</span></div>
+          <div class="stat-number" id="totalStat">—</div>
+          <div class="stat-note">Registros cargados desde el servidor</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-label">Activas</span><span class="stat-icon">✓</span></div>
+          <div class="stat-number" id="activeStat">—</div>
+          <div class="stat-note">Aún no han vencido</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-label">Vencidas</span><span class="stat-icon">◷</span></div>
+          <div class="stat-number" id="expiredStat">—</div>
+          <div class="stat-note">Fecha de vencimiento pasada</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><span class="stat-label">Base de datos</span><span class="stat-icon">⌘</span></div>
+          <div class="stat-number" id="dbStat" style="font-size:21px">Comprobando</div>
+          <div class="stat-note">Estado de conexión</div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header"><div><h2>Actividad de licencias</h2><p>Claves creadas por día durante la última semana.</p></div><span class="stat-icon">⌁</span></div>
-        <div class="chart-wrap"><canvas id="activityChart" aria-label="Gráfico de licencias creadas por día"></canvas></div>
-        <div class="legend"><span class="legend-dot"></span> Licencias creadas <span class="muted">· Últimos 7 días</span></div>
+      <div class="dashboard-grid">
+        <div class="panel">
+          <div class="panel-title">
+            <h3>Crear licencia rápida</h3>
+            <span class="badge">GENERADOR</span>
+          </div>
+          <form id="quickCreateForm" class="quick-form">
+            <div class="field">
+              <label for="quickAmount">Duración</label>
+              <input id="quickAmount" type="number" min="1" max="8760" value="24" required>
+            </div>
+            <div class="field">
+              <label for="quickUnit">Unidad de tiempo</label>
+              <select id="quickUnit">
+                <option value="horas">Horas</option>
+                <option value="dias">Días</option>
+              </select>
+            </div>
+            <div class="full">
+              <button class="primary-btn" type="submit">＋ Generar licencia</button>
+            </div>
+            <div class="full form-note">La clave generada se muestra una sola vez. Guárdala antes de cerrar el aviso.</div>
+          </form>
+          <div id="quickResult" class="notice hidden" style="margin-top:16px"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title"><h3>Estado del sistema</h3><span class="badge">LIVE</span></div>
+          <div class="status-line"><span>Panel</span><span class="badge valid">Disponible</span></div>
+          <div class="status-line"><span>API de licencias</span><span id="apiStatus" class="badge">Comprobando</span></div>
+          <div class="status-line"><span>Base de datos</span><span id="dbStatus" class="badge">Comprobando</span></div>
+          <div class="status-line"><span>Última actualización</span><span id="lastUpdate">—</span></div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:18px">
+        <div class="panel-title">
+          <h3>Licencias recientes</h3>
+          <button class="secondary-btn" type="button" data-goto="licenses">Ver todas →</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Creación</th><th>Vencimiento</th><th>Estado</th></tr></thead>
+            <tbody id="recentTable"><tr><td colspan="4" class="empty">Cargando licencias...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <section class="card table-card">
-      <div class="table-header"><div><h2>Gestión de licencias</h2><p class="muted small" style="margin:0">Busca, filtra y ordena los registros.</p></div><button class="btn" id="refreshButton" type="button">↻ Actualizar</button></div>
-      <div class="filters">
-        <div class="search"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="Buscar por ID o fecha..."></div>
-        <select id="statusFilter" aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="active">Vigentes</option><option value="expired">Vencidas</option></select>
-        <select id="sortFilter" aria-label="Ordenar"><option value="newest">Más recientes</option><option value="oldest">Más antiguas</option><option value="expiry">Por vencimiento</option></select>
+    <!-- LICENSE LIST -->
+    <section id="page-licenses" class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Gestión de licencias</h2>
+          <p>Consulta, busca y filtra los registros existentes.</p>
+        </div>
+        <button class="primary-btn" type="button" data-goto="create">＋ Nueva licencia</button>
       </div>
-      <div class="message" id="listMessage" role="status" style="padding:0 19px"></div>
-      <div class="table-wrap"><table><thead><tr><th>ID</th><th>Estado</th><th>Creación</th><th>Vencimiento</th><th>Tiempo restante</th></tr></thead><tbody id="licenseRows"><tr><td colspan="5" class="empty">Inicia sesión para cargar las licencias.</td></tr></tbody></table></div>
-      <div class="table-footer"><span id="resultCount">Sin registros cargados</span><span>Hasta 100 registros recientes</span></div>
+
+      <div class="stats">
+        <div class="stat-card"><div class="stat-label">Total cargado</div><div class="stat-number" id="listTotal">—</div></div>
+        <div class="stat-card"><div class="stat-label">Activas</div><div class="stat-number" id="listActive">—</div></div>
+        <div class="stat-card"><div class="stat-label">Vencidas</div><div class="stat-number" id="listExpired">—</div></div>
+        <div class="stat-card"><div class="stat-label">Mostrando</div><div class="stat-number" id="listShowing">—</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar">
+          <input id="searchInput" type="search" placeholder="Buscar por ID o fecha...">
+          <select id="statusFilter">
+            <option value="all">Todos los estados</option>
+            <option value="active">Activas</option>
+            <option value="expired">Vencidas</option>
+          </select>
+          <button id="exportButton" class="secondary-btn" type="button">↓ Exportar CSV</button>
+          <button id="refreshLicenses" class="secondary-btn" type="button">↻</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Creada</th><th>Vencimiento</th><th>Tiempo restante</th><th>Estado</th></tr></thead>
+            <tbody id="licenseTable"><tr><td colspan="5" class="empty">Cargando...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <span id="pageInfo">Página 1</span>
+          <div style="display:flex;gap:8px">
+            <button id="prevPage" class="secondary-btn" type="button">← Anterior</button>
+            <button id="nextPage" class="secondary-btn" type="button">Siguiente →</button>
+          </div>
+        </div>
+      </div>
+      <p class="form-note" style="margin-top:12px">Por seguridad, el servidor almacena hashes de las claves. Las claves originales no se pueden recuperar desde la tabla.</p>
     </section>
-    <footer>NEXUS CONTROL · LICENSE MANAGEMENT SYSTEM</footer>
+
+    <!-- CREATE -->
+    <section id="page-create" class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Generar nueva licencia</h2>
+          <p>Configura la duración y crea una clave aleatoria.</p>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="panel">
+          <div class="panel-title"><h3>Configuración de licencia</h3><span class="badge">NEW KEY</span></div>
+          <form id="createForm">
+            <div class="field">
+              <label for="createAmount">Duración</label>
+              <input id="createAmount" type="number" min="1" max="8760" value="24" required>
+            </div>
+            <div class="field">
+              <label for="createUnit">Unidad</label>
+              <select id="createUnit">
+                <option value="horas">Horas</option>
+                <option value="dias">Días</option>
+              </select>
+            </div>
+            <div class="notice" style="margin-top:18px">
+              Revisa la duración antes de generar la clave. La licencia comenzará a contar desde el momento en que se cree.
+            </div>
+            <button class="primary-btn" id="createButton" style="margin-top:18px;width:100%" type="submit">
+              Generar clave segura
+            </button>
+          </form>
+          <div id="createResult" class="notice hidden" style="margin-top:18px"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title"><h3>Información</h3></div>
+          <div class="status-line"><span>Generación</span><span>Automática</span></div>
+          <div class="status-line"><span>Almacenamiento</span><span>PostgreSQL</span></div>
+          <div class="status-line"><span>Protección de clave</span><span>SHA-256</span></div>
+          <div class="status-line"><span>Autorización</span><span>Sesión admin</span></div>
+          <p class="form-note" style="margin-top:15px">
+            La clave se devuelve al crearla. Cópiala y guárdala en un lugar seguro; el panel no podrá volver a mostrarla después.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM -->
+    <section id="page-system" class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Estado del sistema</h2>
+          <p>Información de conectividad de los servicios.</p>
+        </div>
+        <button class="secondary-btn" id="refreshSystem" type="button">↻ Comprobar ahora</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="panel">
+          <div class="panel-title"><h3>Servicios</h3><span class="badge">STATUS</span></div>
+          <div class="status-line"><span>Interfaz web</span><span class="badge valid">Operativa</span></div>
+          <div class="status-line"><span>Servidor API</span><span id="systemApiStatus" class="badge">Comprobando</span></div>
+          <div class="status-line"><span>PostgreSQL</span><span id="systemDbStatus" class="badge">Comprobando</span></div>
+          <div class="status-line"><span>Sesión administrativa</span><span id="sessionStatus" class="badge valid">Autenticada</span></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title"><h3>Información de la consola</h3></div>
+          <div class="status-line"><span>Producto</span><span>inj3ct33</span></div>
+          <div class="status-line"><span>Versión de interfaz</span><span>2.0</span></div>
+          <div class="status-line"><span>Licencias mostradas</span><span id="systemCount">—</span></div>
+          <div class="status-line"><span>Última comprobación</span><span id="systemLastCheck">—</span></div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:18px">
+        <div class="panel-title"><h3>Notas de seguridad</h3></div>
+        <p class="form-note">
+          Usa una contraseña de administrador segura. No compartas tu sesión ni publiques tus variables de entorno.
+          La comprobación de la base de datos solo indica conectividad; no sustituye las copias de seguridad.
+        </p>
+      </div>
+    </section>
   </main>
 </div>
 
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
 <script>
-const $ = id => document.getElementById(id);
-let licenses = [];
+"use strict";
+
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+const state = {
+  licenses: [],
+  currentPage: 1,
+  pageSize: 10,
+  currentSection: "dashboard",
+  dbOk: false,
+  apiOk: false,
+  busy: false
+};
+
+const pageMeta = {
+  dashboard: ["Dashboard", "Resumen de tu sistema de licencias."],
+  licenses: ["Licencias", "Busca y revisa las licencias registradas."],
+  create: ["Crear licencia", "Genera una nueva clave de acceso."],
+  system: ["Estado del sistema", "Comprobación de servicios y conectividad."]
+};
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[ch]);
+}
+
+function showToast(message, type = "success") {
+  const toast = $("#toast");
+  toast.textContent = message;
+  toast.className = "toast " + (type === "error" ? "error" : "success");
+  toast.classList.remove("hidden");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.classList.add("hidden"), 4000);
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleString("es-CL", {
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit"
+  });
+}
+
+function isExpired(license) {
+  const expiry = new Date(license.vence_en).getTime();
+  return !Number.isFinite(expiry) || expiry <= Date.now();
+}
+
+function remainingText(license) {
+  const expiry = new Date(license.vence_en).getTime();
+  if (!Number.isFinite(expiry)) return "Sin información";
+
+  const diff = expiry - Date.now();
+  if (diff <= 0) return "Vencida";
+
+  const hours = Math.floor(diff / 3600000);
+  if (hours < 1) return "Menos de 1 hora";
+  if (hours < 48) return hours + " h";
+
+  return Math.floor(hours / 24) + " días";
+}
+
+function statusBadge(license) {
+  return isExpired(license)
+    ? '<span class="badge expired">Vencida</span>'
+    : '<span class="badge valid">Activa</span>';
+}
 
 async function api(url, options = {}) {
   const response = await fetch(url, {
-    credentials:'same-origin',
+    credentials: "same-origin",
     ...options,
-    headers:{
-      ...(options.body ? {'Content-Type':'application/json'} : {}),
+    headers: {
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
       ...(options.headers || {})
     }
   });
-  const data = await response.json().catch(()=>({}));
-  if(response.status===401 && url!=='/api/login') showLogin('Tu sesión expiró. Inicia sesión otra vez.');
-  if(!response.ok) throw new Error(data.error || 'No se pudo completar la solicitud.');
+
+  const contentType = response.headers.get("content-type") || "";
+  let data = {};
+
+  if (contentType.includes("application/json")) {
+    data = await response.json();
+  } else {
+    const text = await response.text();
+    if (!response.ok) throw new Error(text || "Error del servidor");
+  }
+
+  if (response.status === 401 || response.status === 403) {
+    if (url !== "/api/login") {
+      showLogin("Tu sesión terminó. Inicia sesión de nuevo.");
+    }
+    throw new Error(data.error || data.mensaje || "Sesión no autorizada");
+  }
+
+  if (!response.ok) {
+    throw new Error(data.error || data.mensaje || "Error HTTP " + response.status);
+  }
+
   return data;
 }
 
-function showLogin(message=''){
-  $('appScreen').classList.add('hidden');
-  $('loginScreen').classList.remove('hidden');
-  $('loginMessage').textContent=message;
-  $('loginMessage').className='message error';
-}
-function showApp(){
-  $('loginScreen').classList.add('hidden');
-  $('appScreen').classList.remove('hidden');
-}
-function parsedDate(value){
-  const d=new Date(value);
-  return Number.isNaN(d.getTime())?null:d;
-}
-function dateText(value){
-  const d=parsedDate(value);
-  return d?d.toLocaleString('es-CL'):'No disponible';
-}
-function active(item){
-  const d=parsedDate(item.vence_en);
-  return !!d && d.getTime()>Date.now();
-}
-function remaining(value){
-  const d=parsedDate(value);
-  if(!d)return 'No disponible';
-  const ms=d.getTime()-Date.now();
-  if(ms<=0)return 'Vencida';
-  const hours=Math.floor(ms/3600000);
-  const days=Math.floor(hours/24);
-  return days>0?days+' d '+(hours%24)+' h':hours+' h';
+function showLogin(message = "") {
+  $("#app").classList.add("hidden");
+  $("#loginScreen").classList.remove("hidden");
+  $("#loginError").textContent = message;
+  $("#adminPassword").value = "";
+  $("#adminPassword").focus();
 }
 
-function updateStats(){
-  const now=Date.now();
-  $('totalCount').textContent=licenses.length;
-  $('activeCount').textContent=licenses.filter(active).length;
-  $('expiredCount').textContent=licenses.filter(x=>!active(x)).length;
-  $('soonCount').textContent=licenses.filter(x=>{
-    const d=parsedDate(x.vence_en);
-    return d && d.getTime()>now && d.getTime()<=now+86400000;
-  }).length;
+function showApp() {
+  $("#loginScreen").classList.add("hidden");
+  $("#app").classList.remove("hidden");
+  navigate("dashboard");
+  refreshAll();
 }
 
-function renderTable(){
-  const query=$('searchInput').value.trim().toLowerCase();
-  const status=$('statusFilter').value;
-  const sort=$('sortFilter').value;
+async function login(password) {
+  const button = $("#loginButton");
+  button.disabled = true;
+  button.textContent = "Verificando...";
 
-  let rows=licenses.filter(item=>{
-    const valid=active(item);
-    if(status==='active'&&!valid)return false;
-    if(status==='expired'&&valid)return false;
-    const text=[item.id,dateText(item.creada_en),dateText(item.vence_en)].join(' ').toLowerCase();
-    return text.includes(query);
-  });
-
-  rows.sort((a,b)=>{
-    const ca=parsedDate(a.creada_en)?.getTime()||0;
-    const cb=parsedDate(b.creada_en)?.getTime()||0;
-    const ea=parsedDate(a.vence_en)?.getTime()||0;
-    const eb=parsedDate(b.vence_en)?.getTime()||0;
-    if(sort==='oldest')return ca-cb;
-    if(sort==='expiry')return ea-eb;
-    return cb-ca;
-  });
-
-  $('licenseRows').replaceChildren();
-  if(!rows.length){
-    const tr=document.createElement('tr');
-    const td=document.createElement('td');
-    td.colSpan=5;td.className='empty';
-    td.textContent=licenses.length?'No hay resultados para estos filtros.':'Todavía no hay licencias creadas.';
-    tr.appendChild(td);$('licenseRows').appendChild(tr);
-  }
-
-  for(const item of rows){
-    const tr=document.createElement('tr');
-    const id=document.createElement('td');id.className='id-text';id.textContent='#'+item.id;
-    const stateCell=document.createElement('td');
-    const state=document.createElement('span');
-    state.className='status'+(active(item)?'':' expired');
-    state.textContent=active(item)?'Vigente':'Vencida';
-    stateCell.appendChild(state);
-    const created=document.createElement('td');created.textContent=dateText(item.creada_en);
-    const expiry=document.createElement('td');expiry.textContent=dateText(item.vence_en);
-    const time=document.createElement('td');time.textContent=remaining(item.vence_en);
-    if(!active(item))time.style.color='var(--red)';
-    tr.append(id,stateCell,created,expiry,time);
-    $('licenseRows').appendChild(tr);
-  }
-  $('resultCount').textContent='Mostrando '+rows.length+' de '+licenses.length+' registros';
-}
-
-function drawChart(){
-  const canvas=$('activityChart');
-  const rect=canvas.getBoundingClientRect();
-  if(!rect.width||!rect.height)return;
-  const ratio=window.devicePixelRatio||1;
-  canvas.width=Math.round(rect.width*ratio);
-  canvas.height=Math.round(rect.height*ratio);
-  const ctx=canvas.getContext('2d');
-  ctx.scale(ratio,ratio);
-  const w=rect.width,h=rect.height;
-  ctx.clearRect(0,0,w,h);
-
-  const days=[];
-  for(let i=6;i>=0;i--){
-    const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push(d);
-  }
-  const counts=days.map(day=>licenses.filter(item=>{
-    const d=parsedDate(item.creada_en);
-    return d&&d>=day&&d<new Date(day.getTime()+86400000);
-  }).length);
-  const max=Math.max(4,...counts);
-  const pad={left:22,right:10,top:12,bottom:25};
-  const cw=w-pad.left-pad.right,ch=h-pad.top-pad.bottom;
-  const points=counts.map((value,i)=>({x:pad.left+cw*i/6,y:pad.top+ch-(value/max)*ch}));
-
-  for(let i=0;i<4;i++){
-    const y=pad.top+ch*i/3;
-    ctx.strokeStyle='#263247';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(w-pad.right,y);ctx.stroke();
-  }
-  const fill=ctx.createLinearGradient(0,pad.top,0,h-pad.bottom);
-  fill.addColorStop(0,'rgba(80,229,239,.25)');
-  fill.addColorStop(1,'rgba(80,229,239,0)');
-  ctx.beginPath();ctx.moveTo(points[0].x,h-pad.bottom);
-  points.forEach(p=>ctx.lineTo(p.x,p.y));
-  ctx.lineTo(points[6].x,h-pad.bottom);ctx.closePath();ctx.fillStyle=fill;ctx.fill();
-
-  ctx.beginPath();
-  points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
-  ctx.strokeStyle='#50e5ef';ctx.lineWidth=2.3;ctx.lineJoin='round';ctx.stroke();
-
-  points.forEach((p,i)=>{
-    ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);
-    ctx.fillStyle='#0f1724';ctx.fill();ctx.strokeStyle='#50e5ef';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#8190a8';ctx.textAlign='center';ctx.font='10px sans-serif';
-    ctx.fillText(['L','M','X','J','V','S','D'][i],p.x,h-9);
-  });
-}
-
-async function loadLicenses(){
-  $('listMessage').textContent='';
-  const data=await api('/api/licencias');
-  licenses=Array.isArray(data)?data:[];
-  updateStats();renderTable();drawChart();
-}
-
-$('loginForm').addEventListener('submit',async event=>{
-  event.preventDefault();
-  const button=$('loginButton');
-  button.disabled=true;button.textContent='Verificando acceso...';
-  $('loginMessage').textContent='';
-  try{
-    await api('/api/login',{method:'POST',body:JSON.stringify({password:$('password').value})});
-    $('password').value='';showApp();
-    try{await loadLicenses()}catch(error){
-      $('listMessage').textContent=error.message;
-      $('listMessage').className='message error';
-    }
-  }catch(error){
-    $('loginMessage').textContent=error.message;
-    $('loginMessage').className='message error';
-  }finally{
-    button.disabled=false;button.textContent='Acceder al panel →';
-  }
-});
-
-$('createForm').addEventListener('submit',async event=>{
-  event.preventDefault();
-  const button=$('createButton');
-  button.disabled=true;button.textContent='Generando clave...';
-  $('createMessage').textContent='';
-  $('generatedBox').classList.add('hidden');
-  try{
-    const data=await api('/api/licencias',{
-      method:'POST',
-      body:JSON.stringify({duracion:Number($('duration').value),unidad:$('unit').value})
+  try {
+    await api("/api/login", {
+      method: "POST",
+      body: JSON.stringify({ password })
     });
-    $('generatedKey').textContent=data.licencia;
-    $('generatedBox').classList.remove('hidden');
-    $('createMessage').textContent='Licencia guardada correctamente.';
-    $('createMessage').className='message success';
+    $("#loginError").textContent = "";
+    showApp();
+    showToast("Sesión iniciada correctamente.");
+  } catch (error) {
+    $("#loginError").textContent = error.message || "No se pudo iniciar sesión.";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Iniciar sesión →";
+  }
+}
+
+$("#loginForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const password = $("#adminPassword").value;
+  if (!password) return;
+  await login(password);
+});
+
+$("#logoutButton").addEventListener("click", async () => {
+  try {
+    await api("/api/logout", { method: "POST" });
+  } catch (_) {
+    // También se limpia la interfaz si el servidor ya cerró la sesión.
+  }
+  showLogin("Sesión cerrada.");
+});
+
+function navigate(page) {
+  if (!pageMeta[page]) return;
+
+  state.currentSection = page;
+  $$(".section").forEach(section => section.classList.remove("active"));
+  $("#page-" + page).classList.add("active");
+
+  $$(".nav-btn").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+
+  $("#pageTitle").textContent = pageMeta[page][0];
+  $("#pageSubtitle").textContent = pageMeta[page][1];
+  $("#sidebar").classList.remove("open");
+
+  if (page === "licenses") renderLicenseTable();
+  if (page === "system") checkSystem();
+}
+
+$$(".nav-btn").forEach(button => {
+  button.addEventListener("click", () => navigate(button.dataset.page));
+});
+
+$$("[data-goto]").forEach(button => {
+  button.addEventListener("click", () => navigate(button.dataset.goto));
+});
+
+$("#mobileMenu").addEventListener("click", () => {
+  $("#sidebar").classList.toggle("open");
+});
+
+async function loadLicenses() {
+  const data = await api("/api/licencias");
+  if (!Array.isArray(data)) throw new Error("La respuesta de licencias no es una lista.");
+  state.licenses = data;
+  state.currentPage = 1;
+  renderStats();
+  renderRecentTable();
+  renderLicenseTable();
+}
+
+function renderStats() {
+  const licenses = state.licenses;
+  const expired = licenses.filter(isExpired).length;
+  const active = licenses.length - expired;
+
+  $("#totalStat").textContent = licenses.length;
+  $("#activeStat").textContent = active;
+  $("#expiredStat").textContent = expired;
+
+  $("#listTotal").textContent = licenses.length;
+  $("#listActive").textContent = active;
+  $("#listExpired").textContent = expired;
+  $("#systemCount").textContent = licenses.length;
+}
+
+function renderRecentTable() {
+  const recent = state.licenses.slice(0, 5);
+  const table = $("#recentTable");
+
+  if (!recent.length) {
+    table.innerHTML = '<tr><td colspan="4" class="empty">Todavía no hay licencias.</td></tr>';
+    return;
+  }
+
+  table.innerHTML = recent.map(license => `
+    <tr>
+      <td>#${escapeHtml(license.id)}</td>
+      <td>${escapeHtml(formatDate(license.creada_en))}</td>
+      <td>${escapeHtml(formatDate(license.vence_en))}</td>
+      <td>${statusBadge(license)}</td>
+    </tr>
+  `).join("");
+}
+
+function getFilteredLicenses() {
+  const query = $("#searchInput").value.trim().toLowerCase();
+  const filter = $("#statusFilter").value;
+
+  return state.licenses.filter(license => {
+    const matchesQuery =
+      String(license.id ?? "").toLowerCase().includes(query) ||
+      formatDate(license.creada_en).toLowerCase().includes(query) ||
+      formatDate(license.vence_en).toLowerCase().includes(query);
+
+    const expired = isExpired(license);
+    const matchesStatus = filter === "all" ||
+      (filter === "active" && !expired) ||
+      (filter === "expired" && expired);
+
+    return matchesQuery && matchesStatus;
+  });
+}
+
+function renderLicenseTable() {
+  if (!$("#licenseTable")) return;
+
+  const filtered = getFilteredLicenses();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / state.pageSize));
+  state.currentPage = Math.min(state.currentPage, totalPages);
+
+  const start = (state.currentPage - 1) * state.pageSize;
+  const visible = filtered.slice(start, start + state.pageSize);
+
+  $("#listShowing").textContent = visible.length;
+  $("#pageInfo").textContent =
+    "Página " + state.currentPage + " de " + totalPages + " · " + filtered.length + " resultados";
+
+  $("#prevPage").disabled = state.currentPage <= 1;
+  $("#nextPage").disabled = state.currentPage >= totalPages;
+
+  const table = $("#licenseTable");
+
+  if (!visible.length) {
+    table.innerHTML = '<tr><td colspan="5" class="empty">No hay resultados para esta búsqueda.</td></tr>';
+    return;
+  }
+
+  table.innerHTML = visible.map(license => `
+    <tr>
+      <td>#${escapeHtml(license.id)}</td>
+      <td>${escapeHtml(formatDate(license.creada_en))}</td>
+      <td>${escapeHtml(formatDate(license.vence_en))}</td>
+      <td>${escapeHtml(remainingText(license))}</td>
+      <td>${statusBadge(license)}</td>
+    </tr>
+  `).join("");
+}
+
+$("#searchInput").addEventListener("input", () => {
+  state.currentPage = 1;
+  renderLicenseTable();
+});
+
+$("#statusFilter").addEventListener("change", () => {
+  state.currentPage = 1;
+  renderLicenseTable();
+});
+
+$("#prevPage").addEventListener("click", () => {
+  if (state.currentPage > 1) {
+    state.currentPage--;
+    renderLicenseTable();
+  }
+});
+
+$("#nextPage").addEventListener("click", () => {
+  state.currentPage++;
+  renderLicenseTable();
+});
+
+async function createLicense(amount, unit, resultElement, button) {
+  const count = Number(amount);
+
+  if (!Number.isInteger(count) || count < 1 || count > 8760) {
+    showToast("Introduce una duración entre 1 y 8760.", "error");
+    return;
+  }
+
+  if (!["horas", "dias"].includes(unit)) {
+    showToast("Selecciona una unidad válida.", "error");
+    return;
+  }
+
+  if (state.busy) return;
+  state.busy = true;
+
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = "Generando...";
+
+  try {
+    const data = await api("/api/licencias", {
+      method: "POST",
+      body: JSON.stringify({ cantidad: count, unidad: unit })
+    });
+
+    const license = data.licencia || {};
+    const key = data.clave;
+
+    if (!key) throw new Error("El servidor no devolvió la clave.");
+
+    resultElement.innerHTML = `
+      <strong>✓ Licencia creada correctamente</strong>
+      <p>Guarda esta clave ahora. No podrás recuperarla desde la tabla.</p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <code style="overflow-wrap:anywhere;color:var(--cyan)">${escapeHtml(key)}</code>
+        <button type="button" class="secondary-btn" id="copyNewKey">Copiar clave</button>
+      </div>
+      <p class="form-note">ID: ${escapeHtml(license.id ?? "—")}</p>
+      <p class="form-note">Vence: ${escapeHtml(formatDate(license.vence_en))}</p>
+    `;
+    resultElement.classList.remove("hidden");
+
+    $("#copyNewKey").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(key);
+        showToast("Clave copiada al portapapeles.");
+      } catch (_) {
+        showToast("No se pudo copiar automáticamente. Selecciona la clave y cópiala.", "error");
+      }
+    });
+
     await loadLicenses();
-  }catch(error){
-    $('createMessage').textContent=error.message;
-    $('createMessage').className='message error';
-  }finally{
-    button.disabled=false;button.textContent='＋ Generar nueva clave';
+    showToast("Licencia generada correctamente.");
+  } catch (error) {
+    showToast(error.message || "No se pudo crear la licencia.", "error");
+  } finally {
+    state.busy = false;
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
+
+$("#quickCreateForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  await createLicense(
+    $("#quickAmount").value,
+    $("#quickUnit").value,
+    $("#quickResult"),
+    event.submitter || $("#quickCreateForm button[type='submit']")
+  );
+});
+
+$("#createForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  await createLicense(
+    $("#createAmount").value,
+    $("#createUnit").value,
+    $("#createResult"),
+    $("#createButton")
+  );
+});
+
+$("#exportButton").addEventListener("click", () => {
+  const filtered = getFilteredLicenses();
+
+  if (!filtered.length) {
+    showToast("No hay licencias para exportar.", "error");
+    return;
+  }
+
+  const rows = [
+    ["ID", "Creada", "Vencimiento", "Estado"],
+    ...filtered.map(license => [
+      license.id,
+      license.creada_en,
+      license.vence_en,
+      isExpired(license) ? "Vencida" : "Activa"
+    ])
+  ];
+
+  const csv = rows.map(row => row.map(value =>
+    '"' + String(value ?? "").replace(/"/g, '""') + '"'
+  ).join(",")).join("\r\n");
+
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = "inj3ct33-licencias.csv";
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+});
+
+async function checkDatabase() {
+  try {
+    const data = await api("/estado-db");
+    state.dbOk = Boolean(data.ok);
+  } catch (_) {
+    state.dbOk = false;
+  }
+
+  const text = state.dbOk ? "Conectada" : "Sin conexión";
+  $("#dbStat").textContent = text;
+
+  ["dbStatus", "systemDbStatus"].forEach(id => {
+    const element = $("#" + id);
+    element.textContent = text;
+    element.className = "badge " + (state.dbOk ? "valid" : "expired");
+  });
+}
+
+async function checkSystem() {
+  $("#systemLastCheck").textContent = new Date().toLocaleTimeString("es-CL");
+  $("#lastUpdate").textContent = new Date().toLocaleTimeString("es-CL");
+
+  await checkDatabase();
+
+  const apiBadge = state.apiOk ? "Operativa" : "Error";
+  ["apiStatus", "systemApiStatus"].forEach(id => {
+    const element = $("#" + id);
+    element.textContent = apiBadge;
+    element.className = "badge " + (state.apiOk ? "valid" : "expired");
+  });
+
+  $("#sidebarStatus").textContent = state.dbOk ? "Sistema conectado" : "Revisar conexión";
+  $("#sidebarDot").classList.toggle("off", !state.dbOk);
+}
+
+async function refreshAll() {
+  try {
+    await loadLicenses();
+    state.apiOk = true;
+  } catch (error) {
+    state.apiOk = false;
+    if (!String(error.message).toLowerCase().includes("sesión")) {
+      showToast("No se pudieron cargar las licencias: " + error.message, "error");
+    }
+  }
+
+  await checkSystem();
+  $("#lastUpdate").textContent = new Date().toLocaleTimeString("es-CL");
+}
+
+$("#refreshDashboard").addEventListener("click", refreshAll);
+$("#refreshLicenses").addEventListener("click", async () => {
+  try {
+    await loadLicenses();
+    showToast("Lista actualizada.");
+  } catch (error) {
+    showToast(error.message, "error");
   }
 });
+$("#refreshSystem").addEventListener("click", checkSystem);
 
-$('copyButton').addEventListener('click',async()=>{
-  try{
-    await navigator.clipboard.writeText($('generatedKey').textContent);
-    $('copyButton').textContent='Copiada ✓';
-  }catch{
-    $('createMessage').textContent='Selecciona y copia la clave manualmente.';
-    $('createMessage').className='message error';
+/* Comprueba si ya hay una sesión válida. */
+async function init() {
+  try {
+    await loadLicenses();
+    state.apiOk = true;
+    showApp();
+  } catch (_) {
+    showLogin();
   }
-});
+}
 
-$('refreshButton').addEventListener('click',async()=>{
-  const button=$('refreshButton');
-  button.disabled=true;button.textContent='Cargando...';
-  try{await loadLicenses()}
-  catch(error){
-    $('listMessage').textContent=error.message;
-    $('listMessage').className='message error';
-  }finally{button.disabled=false;button.textContent='↻ Actualizar'}
-});
-
-$('logoutButton').addEventListener('click',async()=>{
-  const button=$('logoutButton');button.disabled=true;
-  try{
-    await api('/api/logout',{method:'POST'});
-    licenses=[];showLogin('Sesión cerrada correctamente.');
-  }catch(error){
-    $('listMessage').textContent=error.message;
-    $('listMessage').className='message error';
-  }finally{button.disabled=false}
-});
-
-$('searchInput').addEventListener('input',renderTable);
-$('statusFilter').addEventListener('change',renderTable);
-$('sortFilter').addEventListener('change',renderTable);
-window.addEventListener('resize',()=>{
-  if(!$('appScreen').classList.contains('hidden'))drawChart();
-});
+init();
 </script>
 </body>
 </html>
