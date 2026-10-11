@@ -99,11 +99,30 @@
     </section>
   </main>
 
-  <script>
-    document.getElementById('login').addEventListener('click', () => {
-      document.getElementById('message').textContent =
-        'La autenticación del servidor aún debe implementarse.';
-    });
+ <script>
+  document.getElementById('login').addEventListener('click', async () => {
+    const password = document.getElementById('password').value;
+    const message = document.getElementById('message');
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.ok) {
+        message.textContent = 'Inicio de sesión correcto.';
+      } else {
+        message.textContent = data.error || 'No se pudo iniciar sesión.';
+      }
+    } catch {
+      message.textContent = 'No se pudo conectar al servidor.';
+    }
+  });
+</script>
 
     document.getElementById('create').addEventListener('click', () => {
       document.getElementById('message').textContent =
