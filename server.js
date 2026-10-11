@@ -11,7 +11,17 @@ const pool = new Pool({
 });
 
 const adminPassword = process.env.ADMIN_PASSWORD;
+app.post('/api/login', (req, res) => {
+  const { password } = req.body;
 
+  if (!adminPassword || password !== adminPassword) {
+    return res.status(401).json({
+      error: 'Contraseña incorrecta'
+    });
+  }
+
+  res.json({ ok: true });
+});
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
