@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>License Panel</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #080d18;
+      color: #e8f1ff;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background: #0c1525;
+      border-bottom: 1px solid #203957;
+      padding: 22px;
+    }
+    main {
+      max-width: 900px;
+      margin: 28px auto;
+      padding: 0 16px;
+    }
+    h1 { margin: 0; color: #55a6ff; }
+    .muted { color: #91a9c9; }
+    .card {
+      background: #101e33;
+      border: 1px solid #203957;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #29496f;
+      background: #0a1424;
+      color: #fff;
+      font-size: 15px;
+    }
+    button {
+      background: #1559a6;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background: #2075ce; }
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 6px;
+      background: #203957;
+      color: #b8d9ff;
+      font-size: 12px;
+    }
+    #message { overflow-wrap: anywhere; }
+    @media (min-width: 600px) {
+      .fields { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>LICENSE PANEL</h1>
+    <div class="muted">Panel de administración</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Administrador</h2>
+      <p class="muted">Introduce tu contraseña de administrador para continuar.</p>
+      <input id="password" type="password"
+        placeholder="Contraseña de administrador"
+        autocomplete="current-password">
+      <button id="login">Ingresar</button>
+      <p id="message" class="muted" role="status"></p>
+    </section>
+
+    <section class="card">
+      <h2>Crear licencia</h2>
+      <p class="muted">Duración configurable en horas o días.</p>
+      <div class="fields">
+        <input id="duration" type="number" min="1"
+          max="8760" value="24" aria-label="Cantidad">
+        <select id="unit" aria-label="Unidad de duración">
+          <option value="hours">Horas</option>
+          <option value="days">Días</option>
+        </select>
+      </div>
+      <button id="create" disabled>Crear licencia</button>
+    </section>
+
+    <section class="card">
+      <h2>Licencias</h2>
+      <p class="muted">Las licencias aparecerán aquí cuando conectemos la API.</p>
+      <span class="status">Backend pendiente de conexión</span>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('login').addEventListener('click', () => {
+      document.getElementById('message').textContent =
+        'La autenticación del servidor aún debe implementarse.';
+    });
+
+    document.getElementById('create').addEventListener('click', () => {
+      document.getElementById('message').textContent =
+        'La API de creación todavía no está conectada.';
+    });
+  </script>
+</body>
+</html>
