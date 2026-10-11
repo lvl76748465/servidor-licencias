@@ -13,7 +13,7 @@ const pool = new Pool({
 const adminPassword = process.env.ADMIN_PASSWORD;
 
 app.get('/', (req, res) => {
-  res.send('Servidor de licencias activo');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/estado-db', async (req, res) => {
