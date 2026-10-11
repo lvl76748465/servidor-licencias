@@ -1,6 +1,5 @@
 const express = require('express');
 const { Pool } = require('pg');
-const crypto = require('crypto');
 
 const app = express();
 app.use(express.json());
@@ -10,16 +9,27 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+async function prepararBaseDatos() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS licencias (
+      id BIGSERIAL PRIMARY KEY,
+      clave_hash TEXT UNIQUE NOT NULL,
+      vence_en TIMESTAMPTZ NOT NULL,
+      creada_en TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+}
+
 app.get('/', (req, res) => {
   res.send('Servidor de licencias activo');
 });
 
 app.get('/estado-db', async (req, res) => {
   try {
-    await pool.query('SELECT 1');
-    res.json({ baseDeDatos: 'conectada' });
+    await prepararBaseDatos();
+    res.json({ baseDeDatos: 'conectada', tabla: 'lista' });
   } catch {
-    res.status(500).json({ baseDeDatos: 'error' });
+    res.status(500).json({ error: 'No se pudo preparar la base de datos' });
   }
 });
 
