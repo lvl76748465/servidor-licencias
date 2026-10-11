@@ -1,133 +1,418 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>License Panel</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #080d18;
-      color: #e8f1ff;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      background: #0c1525;
-      border-bottom: 1px solid #203957;
-      padding: 22px;
-    }
-    main {
-      max-width: 900px;
-      margin: 28px auto;
-      padding: 0 16px;
-    }
-    h1 { margin: 0; color: #55a6ff; }
-    .muted { color: #91a9c9; }
-    .card {
-      background: #101e33;
-      border: 1px solid #203957;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 18px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #29496f;
-      background: #0a1424;
-      color: #fff;
-      font-size: 15px;
-    }
-    button {
-      background: #1559a6;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover { background: #2075ce; }
-    .status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 6px;
-      background: #203957;
-      color: #b8d9ff;
-      font-size: 12px;
-    }
-    #message { overflow-wrap: anywhere; }
-    @media (min-width: 600px) {
-      .fields { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b12">
+<title>NEXUS | License Control</title>
+<style>
+:root{color-scheme:dark;--bg:#080b12;--panel:#111824;--panel2:#151f2e;--line:#27354a;--text:#f1f5ff;--muted:#8997af;--blue:#55a7ff;--cyan:#50e5ef;--green:#52e0ad;--red:#ff647c;--yellow:#ffc76a}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 70% -10%,#12468a35,transparent 45%),var(--bg);color:var(--text);font:14px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:12px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.btn{padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);font-weight:700;transition:.15s}
+.btn:hover{filter:brightness(1.15)}.btn:disabled{opacity:.6;cursor:wait}
+.primary{background:linear-gradient(110deg,var(--cyan),var(--blue));color:#06111c;border:0}
+.danger{color:#ff9aa9}.full{width:100%;margin-top:19px}
+input,select{width:100%;min-height:43px;padding:11px 12px;background:#0a101a;color:var(--text);border:1px solid var(--line);border-radius:9px;outline:none}
+input:focus,select:focus{border-color:var(--blue)}
+label{display:block;margin:16px 0 8px;color:#b5c3d9;font-size:12px;font-weight:700}
+h1,h2,h3,p{margin-top:0}h1{font-size:24px;margin-bottom:7px}h2{font-size:16px;margin-bottom:6px}p{line-height:1.6}
+.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login-card{width:100%;max-width:410px;padding:32px;background:var(--panel);border:1px solid #293a50;border-radius:18px;box-shadow:0 25px 90px #0008}
+.mark{width:46px;height:46px;display:grid;place-items:center;border-radius:12px;color:var(--cyan);font-size:22px;font-weight:950;border:1px solid #50e5ef55;background:#50e5ef0c}
+.eyebrow{font-size:10px;color:var(--cyan);font-weight:800;letter-spacing:1.6px;margin-bottom:9px}
+.message{margin-top:12px;font-size:12px;line-height:1.5}.error{color:var(--red)}.success{color:var(--green)}
+.layout{min-height:100vh;display:grid;grid-template-columns:230px minmax(0,1fr)}
+.sidebar{position:sticky;top:0;height:100vh;padding:22px 15px;background:#0b1019ed;border-right:1px solid #1e2a3d;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:11px;padding:0 7px 23px;border-bottom:1px solid #202c3e}
+.brand-title{font-size:13px;font-weight:900;letter-spacing:1.5px}.brand-sub{margin-top:5px;color:var(--muted);font-size:10px;letter-spacing:1px}
+.nav-label{margin:26px 10px 10px;color:#62728c;font-size:10px;font-weight:800;letter-spacing:1.5px}
+.nav{display:flex;align-items:center;gap:12px;padding:12px 11px;margin:3px 0;color:#8d9cb5;border:1px solid transparent;border-radius:9px;font-size:12px;font-weight:650}
+.nav.active{color:#8eefff;background:linear-gradient(90deg,#50e5ef12,#55a7ff08);border-color:#50e5ef25}
+.nav-icon{width:19px;text-align:center;font-size:16px}
+.sidebar-bottom{margin-top:auto;padding:13px;border:1px solid var(--line);border-radius:11px;background:#101722}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 9px #52e0ad80;margin-right:7px}
+main{min-width:0;padding:27px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}
+.top-actions{display:flex;align-items:center;gap:9px}
+.admin-chip{display:flex;align-items:center;gap:9px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#111824}
+.avatar{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:#55a7ff1c;color:#8dc8ff;font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:16px}
+.stat{position:relative;overflow:hidden;padding:17px;background:linear-gradient(140deg,#131c2a,#0e141e);border:1px solid #26364c;border-radius:13px}
+.stat:after{content:"";position:absolute;top:0;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,#55a7ff80,transparent)}
+.stat-top{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px}
+.stat-icon{display:grid;place-items:center;width:32px;height:32px;border:1px solid #55a7ff30;border-radius:9px;background:#55a7ff10;color:var(--blue);font-size:17px}
+.stat-value{font-size:29px;font-weight:850;letter-spacing:-1px;margin:15px 0 6px}
+.stat-foot{font-size:10px;color:var(--muted)}.green{color:var(--green)}.yellow{color:var(--yellow)}
+.grid-main{display:grid;grid-template-columns:minmax(250px,.85fr) minmax(0,1.4fr);gap:15px;align-items:stretch;margin-bottom:15px}
+.card{min-width:0;background:linear-gradient(145deg,#121a27,#0f151f);border:1px solid #263247;border-radius:13px;padding:19px}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.card-header p{font-size:11px;color:var(--muted);margin:0}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fields label{margin-top:5px}
+.generated{margin-top:14px;padding:13px;background:#52e0ad09;border:1px solid #52e0ad40;border-radius:10px}
+.key{font:12px/1.7 ui-monospace,Menlo,monospace;color:#9cf2d0;overflow-wrap:anywhere;margin:10px 0}
+.chart-wrap{height:190px;position:relative;width:100%}.chart-wrap canvas{display:block;width:100%;height:100%}
+.legend{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:10px;margin-top:10px}
+.legend-dot{width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px #50e5ef80}
+.table-card{padding:0;overflow:hidden}.table-header{padding:19px 19px 15px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 19px 17px}
+.search{flex:1;min-width:170px;position:relative}.search input{padding-left:34px}.search-icon{position:absolute;left:12px;top:12px;color:#71819b}
+.filters select{width:auto;min-width:125px}
+.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;text-align:left}
+thead{background:#0c121d}th{padding:12px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:#75849d;border-top:1px solid #222e40;border-bottom:1px solid #222e40;white-space:nowrap}
+td{padding:14px;font-size:12px;color:#cbd6e8;border-bottom:1px solid #202b3b;white-space:nowrap}
+tbody tr:hover{background:#55a7ff06}.id-text{color:#8293ad;font-family:ui-monospace,monospace}
+.status{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:6px;border:1px solid #52e0ad36;background:#52e0ad0b;color:var(--green);font-size:10px}
+.status:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.status.expired{color:var(--red);border-color:#ff647c36;background:#ff647c0b}
+.empty{padding:30px;text-align:center;color:var(--muted);white-space:normal}
+.table-footer{display:flex;justify-content:space-between;gap:10px;padding:13px 18px;color:var(--muted);font-size:11px}
+footer{text-align:center;color:#55647c;font-size:10px;letter-spacing:.5px;padding:20px 0 3px}
+@media(max-width:1180px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-main{grid-template-columns:1fr}}
+@media(max-width:720px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:13px 15px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:0;border:0}.nav-label,.nav,.sidebar-bottom{display:none}main{padding:18px 12px}.topbar{align-items:flex-start;flex-wrap:wrap}.topbar h1{font-size:21px}.admin-chip .admin-name{display:none}.stats{gap:9px}.stat{padding:13px}.stat-value{font-size:25px}.card{padding:15px}.table-header{padding:15px}.filters{padding:0 15px 14px}th,td{padding:12px 10px}.table-footer{flex-direction:column}}
+@media(max-width:380px){.stats{grid-template-columns:1fr}.top-actions .btn{padding:9px;font-size:11px}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>LICENSE PANEL</h1>
-    <div class="muted">Panel de administración</div>
-  </header>
+
+<section class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="mark">N</div>
+    <div class="eyebrow" style="margin-top:26px">NEXUS / ACCESS CONTROL</div>
+    <h1>Bienvenido de nuevo</h1>
+    <p class="muted">Accede al centro de control de licencias.</p>
+    <form id="loginForm">
+      <label for="password">Contraseña de administrador</label>
+      <input id="password" type="password" placeholder="Introduce tu contraseña" autocomplete="current-password" required>
+      <button class="btn primary full" id="loginButton" type="submit">Acceder al panel →</button>
+    </form>
+    <div id="loginMessage" class="message" role="status"></div>
+    <p class="muted small" style="margin:24px 0 0">● &nbsp; Portal privado de administración</p>
+  </div>
+</section>
+
+<div class="layout hidden" id="appScreen">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">N</div>
+      <div><div class="brand-title">NEXUS CONTROL</div><div class="brand-sub">LICENSE MANAGEMENT</div></div>
+    </div>
+    <div class="nav-label">Workspace</div>
+    <div class="nav active"><span class="nav-icon">▦</span> Panel general</div>
+    <div class="nav"><span class="nav-icon">⌘</span> Licencias</div>
+    <div class="nav-label">Sistema</div>
+    <div class="nav"><span class="nav-icon">⚙</span> Configuración</div>
+    <div class="sidebar-bottom"><div class="small"><span class="dot"></span>Panel disponible</div><p class="muted small" style="margin:9px 0 0">NEXUS CONTROL<br>Administración de accesos</p></div>
+  </aside>
 
   <main>
-    <section class="card">
-      <h2>Administrador</h2>
-      <p class="muted">Introduce tu contraseña de administrador para continuar.</p>
-      <input id="password" type="password"
-        placeholder="Contraseña de administrador"
-        autocomplete="current-password">
-      <button id="login">Ingresar</button>
-      <p id="message" class="muted" role="status"></p>
-    </section>
-
-    <section class="card">
-      <h2>Crear licencia</h2>
-      <p class="muted">Duración configurable en horas o días.</p>
-      <div class="fields">
-        <input id="duration" type="number" min="1"
-          max="8760" value="24" aria-label="Cantidad">
-        <select id="unit" aria-label="Unidad de duración">
-          <option value="hours">Horas</option>
-          <option value="days">Días</option>
-        </select>
+    <header class="topbar">
+      <div><div class="eyebrow">WORKSPACE / OVERVIEW</div><h1>Centro de control</h1><div class="muted small">Administra y supervisa tus licencias.</div></div>
+      <div class="top-actions">
+        <div class="admin-chip"><div class="avatar">A</div><div class="admin-name"><div style="font-size:11px;font-weight:750">Administrador</div><div class="muted" style="font-size:10px;margin-top:3px">Acceso privado</div></div></div>
+        <button class="btn danger" id="logoutButton">Cerrar sesión</button>
       </div>
-      <button id="create" disabled>Crear licencia</button>
+    </header>
+
+    <section class="stats">
+      <div class="stat"><div class="stat-top">LICENCIAS CARGADAS <span class="stat-icon">⌘</span></div><div class="stat-value" id="totalCount">—</div><div class="stat-foot">Registros consultados</div></div>
+      <div class="stat"><div class="stat-top">LICENCIAS VIGENTES <span class="stat-icon">✓</span></div><div class="stat-value green" id="activeCount">—</div><div class="stat-foot">No han vencido</div></div>
+      <div class="stat"><div class="stat-top">LICENCIAS VENCIDAS <span class="stat-icon">◷</span></div><div class="stat-value" id="expiredCount">—</div><div class="stat-foot">Fuera de vigencia</div></div>
+      <div class="stat"><div class="stat-top">VENCEN EN 24 H <span class="stat-icon">⌁</span></div><div class="stat-value yellow" id="soonCount">—</div><div class="stat-foot">Próximas 24 horas</div></div>
     </section>
 
-    <section class="card">
-      <h2>Licencias</h2>
-      <p class="muted">Las licencias aparecerán aquí cuando conectemos la API.</p>
-      <span class="status">Backend pendiente de conexión</span>
+    <section class="grid-main">
+      <div class="card">
+        <div class="card-header"><div><h2>Generar licencia</h2><p>Crea una clave de acceso temporal.</p></div><span class="stat-icon">＋</span></div>
+        <form id="createForm">
+          <div class="fields">
+            <div><label for="duration">Duración</label><input id="duration" type="number" min="1" max="8760" value="24" required></div>
+            <div><label for="unit">Unidad</label><select id="unit"><option value="horas">Horas</option><option value="dias">Días</option></select></div>
+          </div>
+          <button class="btn primary full" id="createButton" type="submit">＋ Generar nueva clave</button>
+        </form>
+        <div class="message" id="createMessage" role="status"></div>
+        <div class="generated hidden" id="generatedBox">
+          <div class="success small">✓ Licencia generada</div>
+          <div class="muted small" style="margin-top:7px">Guarda esta clave; no se puede recuperar después.</div>
+          <div class="key" id="generatedKey"></div>
+          <button class="btn" id="copyButton" type="button">Copiar clave</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div><h2>Actividad de licencias</h2><p>Claves creadas por día durante la última semana.</p></div><span class="stat-icon">⌁</span></div>
+        <div class="chart-wrap"><canvas id="activityChart" aria-label="Gráfico de licencias creadas por día"></canvas></div>
+        <div class="legend"><span class="legend-dot"></span> Licencias creadas <span class="muted">· Últimos 7 días</span></div>
+      </div>
     </section>
+
+    <section class="card table-card">
+      <div class="table-header"><div><h2>Gestión de licencias</h2><p class="muted small" style="margin:0">Busca, filtra y ordena los registros.</p></div><button class="btn" id="refreshButton" type="button">↻ Actualizar</button></div>
+      <div class="filters">
+        <div class="search"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="Buscar por ID o fecha..."></div>
+        <select id="statusFilter" aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="active">Vigentes</option><option value="expired">Vencidas</option></select>
+        <select id="sortFilter" aria-label="Ordenar"><option value="newest">Más recientes</option><option value="oldest">Más antiguas</option><option value="expiry">Por vencimiento</option></select>
+      </div>
+      <div class="message" id="listMessage" role="status" style="padding:0 19px"></div>
+      <div class="table-wrap"><table><thead><tr><th>ID</th><th>Estado</th><th>Creación</th><th>Vencimiento</th><th>Tiempo restante</th></tr></thead><tbody id="licenseRows"><tr><td colspan="5" class="empty">Inicia sesión para cargar las licencias.</td></tr></tbody></table></div>
+      <div class="table-footer"><span id="resultCount">Sin registros cargados</span><span>Hasta 100 registros recientes</span></div>
+    </section>
+    <footer>NEXUS CONTROL · LICENSE MANAGEMENT SYSTEM</footer>
   </main>
+</div>
 
- <script>
-  document.getElementById('login').addEventListener('click', async () => {
-    const password = document.getElementById('password').value;
-    const message = document.getElementById('message');
+<script>
+const $ = id => document.getElementById(id);
+let licenses = [];
 
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password })
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.ok) {
-        message.textContent = 'Inicio de sesión correcto.';
-      } else {
-        message.textContent = data.error || 'No se pudo iniciar sesión.';
-      }
-    } catch {
-      message.textContent = 'No se pudo conectar al servidor.';
+async function api(url, options = {}) {
+  const response = await fetch(url, {
+    credentials:'same-origin',
+    ...options,
+    headers:{
+      ...(options.body ? {'Content-Type':'application/json'} : {}),
+      ...(options.headers || {})
     }
   });
-</script>
+  const data = await response.json().catch(()=>({}));
+  if(response.status===401 && url!=='/api/login') showLogin('Tu sesión expiró. Inicia sesión otra vez.');
+  if(!response.ok) throw new Error(data.error || 'No se pudo completar la solicitud.');
+  return data;
+}
 
-    document.getElementById('create').addEventListener('click', () => {
-      document.getElementById('message').textContent =
-        'La API de creación todavía no está conectada.';
+function showLogin(message=''){
+  $('appScreen').classList.add('hidden');
+  $('loginScreen').classList.remove('hidden');
+  $('loginMessage').textContent=message;
+  $('loginMessage').className='message error';
+}
+function showApp(){
+  $('loginScreen').classList.add('hidden');
+  $('appScreen').classList.remove('hidden');
+}
+function parsedDate(value){
+  const d=new Date(value);
+  return Number.isNaN(d.getTime())?null:d;
+}
+function dateText(value){
+  const d=parsedDate(value);
+  return d?d.toLocaleString('es-CL'):'No disponible';
+}
+function active(item){
+  const d=parsedDate(item.vence_en);
+  return !!d && d.getTime()>Date.now();
+}
+function remaining(value){
+  const d=parsedDate(value);
+  if(!d)return 'No disponible';
+  const ms=d.getTime()-Date.now();
+  if(ms<=0)return 'Vencida';
+  const hours=Math.floor(ms/3600000);
+  const days=Math.floor(hours/24);
+  return days>0?days+' d '+(hours%24)+' h':hours+' h';
+}
+
+function updateStats(){
+  const now=Date.now();
+  $('totalCount').textContent=licenses.length;
+  $('activeCount').textContent=licenses.filter(active).length;
+  $('expiredCount').textContent=licenses.filter(x=>!active(x)).length;
+  $('soonCount').textContent=licenses.filter(x=>{
+    const d=parsedDate(x.vence_en);
+    return d && d.getTime()>now && d.getTime()<=now+86400000;
+  }).length;
+}
+
+function renderTable(){
+  const query=$('searchInput').value.trim().toLowerCase();
+  const status=$('statusFilter').value;
+  const sort=$('sortFilter').value;
+
+  let rows=licenses.filter(item=>{
+    const valid=active(item);
+    if(status==='active'&&!valid)return false;
+    if(status==='expired'&&valid)return false;
+    const text=[item.id,dateText(item.creada_en),dateText(item.vence_en)].join(' ').toLowerCase();
+    return text.includes(query);
+  });
+
+  rows.sort((a,b)=>{
+    const ca=parsedDate(a.creada_en)?.getTime()||0;
+    const cb=parsedDate(b.creada_en)?.getTime()||0;
+    const ea=parsedDate(a.vence_en)?.getTime()||0;
+    const eb=parsedDate(b.vence_en)?.getTime()||0;
+    if(sort==='oldest')return ca-cb;
+    if(sort==='expiry')return ea-eb;
+    return cb-ca;
+  });
+
+  $('licenseRows').replaceChildren();
+  if(!rows.length){
+    const tr=document.createElement('tr');
+    const td=document.createElement('td');
+    td.colSpan=5;td.className='empty';
+    td.textContent=licenses.length?'No hay resultados para estos filtros.':'Todavía no hay licencias creadas.';
+    tr.appendChild(td);$('licenseRows').appendChild(tr);
+  }
+
+  for(const item of rows){
+    const tr=document.createElement('tr');
+    const id=document.createElement('td');id.className='id-text';id.textContent='#'+item.id;
+    const stateCell=document.createElement('td');
+    const state=document.createElement('span');
+    state.className='status'+(active(item)?'':' expired');
+    state.textContent=active(item)?'Vigente':'Vencida';
+    stateCell.appendChild(state);
+    const created=document.createElement('td');created.textContent=dateText(item.creada_en);
+    const expiry=document.createElement('td');expiry.textContent=dateText(item.vence_en);
+    const time=document.createElement('td');time.textContent=remaining(item.vence_en);
+    if(!active(item))time.style.color='var(--red)';
+    tr.append(id,stateCell,created,expiry,time);
+    $('licenseRows').appendChild(tr);
+  }
+  $('resultCount').textContent='Mostrando '+rows.length+' de '+licenses.length+' registros';
+}
+
+function drawChart(){
+  const canvas=$('activityChart');
+  const rect=canvas.getBoundingClientRect();
+  if(!rect.width||!rect.height)return;
+  const ratio=window.devicePixelRatio||1;
+  canvas.width=Math.round(rect.width*ratio);
+  canvas.height=Math.round(rect.height*ratio);
+  const ctx=canvas.getContext('2d');
+  ctx.scale(ratio,ratio);
+  const w=rect.width,h=rect.height;
+  ctx.clearRect(0,0,w,h);
+
+  const days=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push(d);
+  }
+  const counts=days.map(day=>licenses.filter(item=>{
+    const d=parsedDate(item.creada_en);
+    return d&&d>=day&&d<new Date(day.getTime()+86400000);
+  }).length);
+  const max=Math.max(4,...counts);
+  const pad={left:22,right:10,top:12,bottom:25};
+  const cw=w-pad.left-pad.right,ch=h-pad.top-pad.bottom;
+  const points=counts.map((value,i)=>({x:pad.left+cw*i/6,y:pad.top+ch-(value/max)*ch}));
+
+  for(let i=0;i<4;i++){
+    const y=pad.top+ch*i/3;
+    ctx.strokeStyle='#263247';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(w-pad.right,y);ctx.stroke();
+  }
+  const fill=ctx.createLinearGradient(0,pad.top,0,h-pad.bottom);
+  fill.addColorStop(0,'rgba(80,229,239,.25)');
+  fill.addColorStop(1,'rgba(80,229,239,0)');
+  ctx.beginPath();ctx.moveTo(points[0].x,h-pad.bottom);
+  points.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(points[6].x,h-pad.bottom);ctx.closePath();ctx.fillStyle=fill;ctx.fill();
+
+  ctx.beginPath();
+  points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+  ctx.strokeStyle='#50e5ef';ctx.lineWidth=2.3;ctx.lineJoin='round';ctx.stroke();
+
+  points.forEach((p,i)=>{
+    ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);
+    ctx.fillStyle='#0f1724';ctx.fill();ctx.strokeStyle='#50e5ef';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#8190a8';ctx.textAlign='center';ctx.font='10px sans-serif';
+    ctx.fillText(['L','M','X','J','V','S','D'][i],p.x,h-9);
+  });
+}
+
+async function loadLicenses(){
+  $('listMessage').textContent='';
+  const data=await api('/api/licencias');
+  licenses=Array.isArray(data)?data:[];
+  updateStats();renderTable();drawChart();
+}
+
+$('loginForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const button=$('loginButton');
+  button.disabled=true;button.textContent='Verificando acceso...';
+  $('loginMessage').textContent='';
+  try{
+    await api('/api/login',{method:'POST',body:JSON.stringify({password:$('password').value})});
+    $('password').value='';showApp();
+    try{await loadLicenses()}catch(error){
+      $('listMessage').textContent=error.message;
+      $('listMessage').className='message error';
+    }
+  }catch(error){
+    $('loginMessage').textContent=error.message;
+    $('loginMessage').className='message error';
+  }finally{
+    button.disabled=false;button.textContent='Acceder al panel →';
+  }
+});
+
+$('createForm').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const button=$('createButton');
+  button.disabled=true;button.textContent='Generando clave...';
+  $('createMessage').textContent='';
+  $('generatedBox').classList.add('hidden');
+  try{
+    const data=await api('/api/licencias',{
+      method:'POST',
+      body:JSON.stringify({duracion:Number($('duration').value),unidad:$('unit').value})
     });
-  </script>
+    $('generatedKey').textContent=data.licencia;
+    $('generatedBox').classList.remove('hidden');
+    $('createMessage').textContent='Licencia guardada correctamente.';
+    $('createMessage').className='message success';
+    await loadLicenses();
+  }catch(error){
+    $('createMessage').textContent=error.message;
+    $('createMessage').className='message error';
+  }finally{
+    button.disabled=false;button.textContent='＋ Generar nueva clave';
+  }
+});
+
+$('copyButton').addEventListener('click',async()=>{
+  try{
+    await navigator.clipboard.writeText($('generatedKey').textContent);
+    $('copyButton').textContent='Copiada ✓';
+  }catch{
+    $('createMessage').textContent='Selecciona y copia la clave manualmente.';
+    $('createMessage').className='message error';
+  }
+});
+
+$('refreshButton').addEventListener('click',async()=>{
+  const button=$('refreshButton');
+  button.disabled=true;button.textContent='Cargando...';
+  try{await loadLicenses()}
+  catch(error){
+    $('listMessage').textContent=error.message;
+    $('listMessage').className='message error';
+  }finally{button.disabled=false;button.textContent='↻ Actualizar'}
+});
+
+$('logoutButton').addEventListener('click',async()=>{
+  const button=$('logoutButton');button.disabled=true;
+  try{
+    await api('/api/logout',{method:'POST'});
+    licenses=[];showLogin('Sesión cerrada correctamente.');
+  }catch(error){
+    $('listMessage').textContent=error.message;
+    $('listMessage').className='message error';
+  }finally{button.disabled=false}
+});
+
+$('searchInput').addEventListener('input',renderTable);
+$('statusFilter').addEventListener('change',renderTable);
+$('sortFilter').addEventListener('change',renderTable);
+window.addEventListener('resize',()=>{
+  if(!$('appScreen').classList.contains('hidden'))drawChart();
+});
+</script>
 </body>
 </html>
